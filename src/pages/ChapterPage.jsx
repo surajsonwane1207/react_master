@@ -3,6 +3,7 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { curriculum } from '../chapters/chapterData';
 import { toggleChapterCompletion } from '../store/progressSlice';
+import ResizableSandbox from '../components/ResizableSandbox';
 
 const ChapterPage = () => {
   const { chapterId } = useParams();
@@ -59,7 +60,7 @@ const ChapterPage = () => {
   return (
     <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out">
       {/* Chapter Header */}
-      <div className="mb-16">
+      <div className="mb-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="flex-1">
             <div className="flex items-center space-x-2 mb-4">
@@ -97,101 +98,68 @@ const ChapterPage = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="grid lg:grid-cols-12 gap-12">
-        <div className="lg:col-span-8">
-          <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 p-8 md:p-12 shadow-sm relative overflow-hidden transition-colors">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 dark:bg-slate-800/50 rounded-bl-[5rem] -z-10 opacity-50"></div>
-            <div className="prose prose-slate dark:prose-invert max-w-none">
-              {renderContent(chapter.content)}
-            </div>
-          </div>
-
-          {/* Navigation Buttons */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {prevChapter ? (
-              <Link 
-                to={`/chapters/${prevChapter.id}`}
-                className="group flex items-center p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[2rem] text-slate-600 dark:text-slate-400 hover:border-blue-200 dark:hover:border-blue-900/50 hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-all shadow-sm"
-              >
-                <div className="w-10 h-10 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mr-4 group-hover:-translate-x-1 transition-transform">
-                    <span className="font-bold">←</span>
-                </div>
-                <div>
-                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Previous</p>
-                    <h4 className="font-bold text-slate-800 dark:text-white truncate max-w-[150px] md:max-w-none">
-                      {prevChapter.title.split('. ')[1] || prevChapter.title}
-                    </h4>
-                </div>
-              </Link>
-            ) : <div />}
-
-            {nextChapter ? (
-              <Link 
-                to={`/chapters/${nextChapter.id}`}
-                className="group flex items-center justify-between p-6 bg-slate-900 dark:bg-blue-600 rounded-[2rem] text-white hover:bg-slate-800 dark:hover:bg-blue-700 transition-all shadow-xl shadow-slate-200 dark:shadow-blue-900/20"
-              >
-                <div className="text-left">
-                    <p className="text-[10px] font-bold text-slate-400 dark:text-blue-200 uppercase tracking-widest mb-1 text-slate-500 dark:text-blue-300">Next</p>
-                    <h4 className="font-bold truncate max-w-[150px] md:max-w-none">
-                      {nextChapter.title.split('. ')[1] || nextChapter.title}
-                    </h4>
-                </div>
-                <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center ml-4 group-hover:translate-x-1 transition-transform">
-                    <span className="font-bold">→</span>
-                </div>
-              </Link>
-            ) : (
-              <Link 
-                to="/"
-                className="group flex items-center justify-between p-6 bg-blue-600 rounded-[2rem] text-white hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 dark:shadow-blue-900/40"
-              >
-                <div className="text-left">
-                    <p className="text-[10px] font-bold text-blue-200 uppercase tracking-widest mb-1">Finish Line</p>
-                    <h4 className="font-bold">Back to Dashboard</h4>
-                </div>
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center ml-4 group-hover:scale-110 transition-transform">
-                    <span className="font-bold">🏆</span>
-                </div>
-              </Link>
-            )}
+      <div className="space-y-12">
+        <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 p-8 md:p-12 shadow-sm relative overflow-hidden transition-colors">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 dark:bg-slate-800/50 rounded-bl-[5rem] -z-10 opacity-50"></div>
+          <div className="prose prose-slate dark:prose-invert max-w-none">
+            {renderContent(chapter.content)}
           </div>
         </div>
 
-        {/* Sidebar Features */}
-        <div className="lg:col-span-4 space-y-8">
-          {chapter.exampleCode && (
-            <div className="bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl sticky top-28">
-              <div className="bg-slate-800 px-6 py-4 border-b border-slate-700 flex items-center justify-between">
-                <div className="flex space-x-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-600"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-600"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-600"></div>
-                </div>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Live Example</span>
-              </div>
-              <div className="p-6 overflow-x-auto scrollbar-hide">
-                <pre className="text-blue-300 font-mono text-[13px] leading-relaxed">
-                  <code>{chapter.exampleCode}</code>
-                </pre>
-              </div>
-              <div className="p-4 bg-slate-800/50 border-t border-slate-700/50">
-                 <button className="w-full py-2 bg-slate-700 text-slate-300 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-slate-600 transition-colors">
-                    Copy Code
-                 </button>
-              </div>
-            </div>
-          )}
+        {(chapter.exampleCode || chapter.ExampleComponent) && (
+          <ResizableSandbox 
+            code={chapter.exampleCode} 
+            Component={chapter.ExampleComponent} 
+          />
+        )}
 
-          {chapter.ExampleComponent && (
-            <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-100 dark:border-slate-800 p-8 shadow-sm transition-colors">
-              <h3 className="text-sm font-black text-slate-900 dark:text-white mb-6 uppercase tracking-widest flex items-center">
-                <span className="mr-2 text-blue-500">⚡</span> Sandbox
-              </h3>
-              <div className="p-6 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700">
-                <chapter.ExampleComponent />
+        {/* Navigation Buttons */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {prevChapter ? (
+            <Link 
+              to={`/chapters/${prevChapter.id}`}
+              className="group flex items-center p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[2rem] text-slate-600 dark:text-slate-400 hover:border-blue-200 dark:hover:border-blue-900/50 hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-all shadow-sm"
+            >
+              <div className="w-10 h-10 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mr-4 group-hover:-translate-x-1 transition-transform">
+                  <span className="font-bold">←</span>
               </div>
-              <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-4 text-center italic">Interact with the component above.</p>
-            </div>
+              <div>
+                  <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Previous</p>
+                  <h4 className="font-bold text-slate-800 dark:text-white truncate max-w-[150px] md:max-w-none">
+                    {prevChapter.title.split('. ')[1] || prevChapter.title}
+                  </h4>
+              </div>
+            </Link>
+          ) : <div />}
+
+          {nextChapter ? (
+            <Link 
+              to={`/chapters/${nextChapter.id}`}
+              className="group flex items-center justify-between p-6 bg-slate-900 dark:bg-blue-600 rounded-[2rem] text-white hover:bg-slate-800 dark:hover:bg-blue-700 transition-all shadow-xl shadow-slate-200 dark:shadow-blue-900/20"
+            >
+              <div className="text-left">
+                  <p className="text-[10px] font-bold text-slate-400 dark:text-blue-200 uppercase tracking-widest mb-1 text-slate-500 dark:text-blue-300">Next</p>
+                  <h4 className="font-bold truncate max-w-[150px] md:max-w-none">
+                    {nextChapter.title.split('. ')[1] || nextChapter.title}
+                  </h4>
+              </div>
+              <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center ml-4 group-hover:translate-x-1 transition-transform">
+                  <span className="font-bold">→</span>
+              </div>
+            </Link>
+          ) : (
+            <Link 
+              to="/"
+              className="group flex items-center justify-between p-6 bg-blue-600 rounded-[2rem] text-white hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 dark:shadow-blue-900/40"
+            >
+              <div className="text-left">
+                  <p className="text-[10px] font-bold text-blue-200 uppercase tracking-widest mb-1">Finish Line</p>
+                  <h4 className="font-bold">Back to Dashboard</h4>
+              </div>
+              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center ml-4 group-hover:scale-110 transition-transform">
+                  <span className="font-bold">🏆</span>
+              </div>
+            </Link>
           )}
         </div>
       </div>

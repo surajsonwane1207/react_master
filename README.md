@@ -61,7 +61,21 @@ Structured roadmap with 18 phases, focusing on incremental skill building.
 - **State Persistence:** Progress is automatically saved to the browser's storage.
 
 ### 3. Testing
-Planned integration for Vitest (Unit) and Playwright (E2E) to ensure educational content remains functional as the platform evolves.
+Comprehensive testing suite implemented using **Vitest** and **React Testing Library**:
+- **Unit Testing:** Verified Redux store logic and persistence (`src/store/progressSlice.test.js`).
+- **Integration Testing:** Verified page-level behavior and navigation (`src/pages/Home.test.jsx`, `src/pages/ChapterPage.test.jsx`).
+
+To run the tests:
+```bash
+# Run tests in watch mode
+npm run test
+
+# Run tests once
+npm run test:run
+
+# Run tests with UI
+npm run test:ui
+```
 
 ---
 
